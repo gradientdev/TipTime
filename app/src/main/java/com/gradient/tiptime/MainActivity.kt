@@ -1,5 +1,6 @@
 //imports
 package com.gradient.tiptime
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Switch
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //calculates tip and other values. Is called when calculate button is tapped
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     fun calculateTip() {
         var mealCost: Double = cost_of_service.text.toString().toDouble()
         var splitNum: Double = split_num.text.toString().toDouble()
