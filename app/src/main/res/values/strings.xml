@@ -6,7 +6,7 @@
     <string name="amazing_20">Amazing (20%)</string>
     <string name="ok_15">OK (15%)</string>
     <string name="calculate">Calculate</string>
-    <string name="round_up_tip">Round up tip?</string>
+    <string name="round_up_tip">Round up tip and costs?</string>
     <string name="cost_of_service">Cost of Service</string>
     <string name="tip_amount">Tip amount: %s</string>
     <string name="total_amount">Total payment: %s</string>
