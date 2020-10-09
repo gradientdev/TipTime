@@ -31,18 +31,17 @@ class MainActivity : AppCompatActivity() {
             R.id.option_eighteen_percent -> 0.18
             else -> 0.15}
 
-        //some values
-        var tip = tipPercentage * mealCost
-        var addedCost = tip + mealCost
+        //original values
+        var tip: Double = tipPercentage * mealCost
+        var addedCost: Double = tip + mealCost
+        var split: Double = addedCost / splitNum
 
-        //finds the views
+        //finds some views
         val switch: Switch = findViewById(R.id.round_up_switch)
         val result: TextView = findViewById(R.id.tip_result)
         val total: TextView = findViewById(R.id.total_cost)
         val splitResult: TextView = findViewById(R.id.split_cost)
         val roundUp = switch.isChecked
-
-        var split: Double = addedCost / splitNum
         var splitString: String = split.toString()
 
         //if roundup switch is checked, rounds tip up
