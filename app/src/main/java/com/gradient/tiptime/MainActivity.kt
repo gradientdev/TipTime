@@ -1,134 +1,63 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#faf8eb"
-    android:padding="20dp"
-    tools:context=".MainActivity">
+//imports
+package com.gradient.tiptime
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.widget.Button
+import android.widget.Switch
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
+import java.text.NumberFormat
 
-    <EditText
-        android:id="@+id/cost_of_service"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-medium"
-        android:hint="@string/cost_of_service"
-        android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+//main activity
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-    <EditText
-        android:id="@+id/split_num"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
-        android:fontFamily="sans-serif-medium"
-        android:hint="Split between"
-        android:inputType="number"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        val calculateButton: Button = findViewById(R.id.calculate_button)
+        calculateButton.setOnClickListener{ calculateTip() }
+    }
 
-    <TextView
-        android:id="@+id/service_question"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:text="@string/how_was_the_service"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cost_of_service" />
+    //calculates tip and other values. Is called when calculate button is tapped
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    fun calculateTip() {
+        var mealCost: Double = cost_of_service.text.toString().toDoubleOrNull() ?: 0.0
+        var splitNum: Double = split_num.text.toString().toDoubleOrNull() ?: 1.0
 
-    <RadioGroup
-        android:id="@+id/tip_options"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checkedButton="@+id/option_twenty_percent"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/service_question">
+        val selectedId = tip_options.checkedRadioButtonId
+        val tipPercentage = when(selectedId) {
+            R.id.option_twenty_percent -> 0.20
+            R.id.option_eighteen_percent -> 0.18
+            else -> 0.15}
 
-        <RadioButton
-            android:id="@+id/option_twenty_percent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/amazing_20" />
+        //original values
+        var tip: Double = tipPercentage * mealCost
+        var addedCost: Double = tip + mealCost
+        var split: Double = addedCost / splitNum
 
-        <RadioButton
-            android:id="@+id/option_eighteen_percent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/good_18" />
+        //finds some views
+        val switch: Switch = findViewById(R.id.round_up_switch)
+        val result: TextView = findViewById(R.id.tip_result)
+        val total: TextView = findViewById(R.id.total_cost)
+        val splitResult: TextView = findViewById(R.id.split_cost)
+        val roundUp = switch.isChecked
+        var splitString: String = split.toString()
 
-        <RadioButton
-            android:id="@+id/option_fifteen_percent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/ok_15" />
+        //if roundup switch is checked, rounds tip up
+        if (roundUp) {
+            tip = kotlin.math.ceil(tip)
+            addedCost = kotlin.math.ceil(addedCost)
+            split = kotlin.math.ceil(split)}
 
-    </RadioGroup>
+        //formats the tip to $
+        val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
+        val formattedCost = NumberFormat.getCurrencyInstance().format(addedCost)
+        val formattedSplit = NumberFormat.getCurrencyInstance().format(split)
 
-    <Switch
-        android:id="@+id/round_up_switch"
-        android:layout_width="310dp"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:fontFamily="sans-serif"
-        android:text="@string/round_up_tip"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tip_options"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-    <Button
-        android:id="@+id/calculate_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#f2747e"
-        android:fontFamily="sans-serif"
-        android:text="@string/calculate"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/round_up_switch" />
-
-    <TextView
-        android:id="@+id/tip_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Tip amount: "
-        android:textColor="#5c5c5c"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/calculate_button" />
-
-    <TextView
-        android:id="@+id/total_cost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Total payment: "
-        android:textColor="#5c5c5c"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tip_result" />
-
-    <TextView
-        android:id="@+id/split_cost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Split cost:  "
-        android:textColor="#5c5c5c"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/total_cost" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        //changes the textViews in the app
+        result.text = getString(R.string.tip_amount, formattedTip)
+        total.text = getString(R.string.total_amount, formattedCost)
+        splitResult.text = getString(R.string.split_cost, formattedSplit)
+    }
+}
