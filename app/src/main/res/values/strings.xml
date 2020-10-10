@@ -12,7 +12,7 @@
     <string name="total_amount">Total payment: %s</string>
     <string name="split_cost">Split cost: %s</string>
     <string name="split_between">Split between</string>
-    <string name="tip_amount_dis">Tip amount:</string>
-    <string name="total_payment">Total payment:</string>
-    <string name="split_cost_dis">Split cost:</string>
+    <string name="tip_amount_dis">Tip amount: $0.00</string>
+    <string name="total_payment">Total payment: $0.00</string>
+    <string name="split_cost_dis">Split cost: $0.00</string>
 </resources>
